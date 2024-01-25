@@ -1,30 +1,36 @@
 import CardProduct from "../components/Fragments/CardProduct";
 
-const Products = () => {
+const products = [
+  {
+    id: "1",
+    name: "Sepatu Nike",
+    price: "Rp 1.000.000",
+    image: "/images/shoes.jpg",
+    description: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident porro, laudantium nihil `,
+  },
+  {
+    id: "2",
+    name: "Sepatu Adidas",
+    price: "Rp 2.300.000",
+    image: "/images/shoes.jpg",
+    description: `Consectetur adipisicing elit. Provident porro, laudantium nihil `,
+  },
+];
+
+const ProductsPage = () => {
   return (
     <div className="flex justify-center py-5">
-      <CardProduct>
-        <CardProduct.Header image={"/images/shoes.jpg"}></CardProduct.Header>
-        <CardProduct.Body title="Sepatu Baru Rilis">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident
-          porro, laudantium nihil repellendus fuga maxime placeat aut eos minima
-          consequuntur illum voluptates veniam enim! Temporibus fugiat odit
-          expedita et libero!
-        </CardProduct.Body>
-        <CardProduct.Footer price={"Rp 1.000.000"}></CardProduct.Footer>
-      </CardProduct>
-      <CardProduct>
-        <CardProduct.Header image={"/images/shoes.jpg"}></CardProduct.Header>
-        <CardProduct.Body title="Sepatu Baru Rilis">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident
-          porro, laudantium nihil repellendus fuga maxime placeat aut eos minima
-          consequuntur illum voluptates veniam enim! Temporibus fugiat odit
-          expedita et libero!
-        </CardProduct.Body>
-        <CardProduct.Footer price={"Rp 1.000.000"}></CardProduct.Footer>
-      </CardProduct>
+      {products.map((product) => (
+        <CardProduct key={product.id}>
+          <CardProduct.Header image={product.image}></CardProduct.Header>
+          <CardProduct.Body name={product.name}>
+            {product.description}
+          </CardProduct.Body>
+          <CardProduct.Footer price={product.price}></CardProduct.Footer>
+        </CardProduct>
+      ))}
     </div>
   );
 };
 
-export default Products;
+export default ProductsPage;
