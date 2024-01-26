@@ -6,7 +6,7 @@ const FormLogin = () => {
     event.preventDefault();
     localStorage.setItem("email", event.target.email.value);
     localStorage.setItem("password", event.target.password.value);
-    console.log("login");
+    window.location.href = "/products";
   };
   return (
     <form onSubmit={handleLogin}>
