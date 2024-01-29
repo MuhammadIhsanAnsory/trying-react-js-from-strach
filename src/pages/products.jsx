@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Button from "../components/Elements/Button";
 import CardProduct from "../components/Fragments/CardProduct";
+import Counter from "../components/Fragments/Counter";
 
 const products = [
   {
@@ -30,13 +31,15 @@ const ProductsPage = () => {
   ]);
 
   const handleAddToCart = (id) => {
-    setCart([
-      ...cart,
-      {
-        id,
-        qty: 1,
-      },
-    ]);
+    if (cart.find((item) => item.id === id)) {
+      setCart(
+        cart.map((item) =>
+          item.id === id ? { ...item, qty: item.qty + 1 } : item
+        )
+      );
+    } else {
+      setCart([...cart, { id, qty: 1 }]);
+    }
   };
 
   const handleLogout = () => {
@@ -70,18 +73,13 @@ const ProductsPage = () => {
         </div>
         <div className="w-1/4 flex">
           <h1 className="text-3xl font-bold">Cart</h1>
-          <ul>
-            {cart.map((item) => (
-              <li key={item.id}>{item.id}</li>
-            ))}
-          </ul>
-          <table>
-            <tbody>
+          <table className="text-left table-auto border-separate border-spacing-x-4">
+            <thead>
               <th>Product</th>
               <th>Price</th>
               <th>Quantity</th>
               <th>Total</th>
-            </tbody>
+            </thead>
             <tbody>
               {cart.map((item) => {
                 const product = products.find(
@@ -90,14 +88,27 @@ const ProductsPage = () => {
                 return (
                   <tr key={item.id}>
                     <td>{product.name}</td>
-                    <td>{product.price}</td>
+                    <td>
+                      {product.price.toLocaleString("id-ID", {
+                        style: "currency",
+                        currency: "IDR",
+                      })}
+                    </td>
                     <td>{item.qty}</td>
-                    <td>{item.qty & product.price}</td>
+                    <td>
+                      {(item.qty * product.price).toLocaleString("id-ID", {
+                        style: "currency",
+                        currency: "IDR",
+                      })}
+                    </td>
                   </tr>
                 );
               })}
             </tbody>
           </table>
+        </div>
+        <div className="mt-5">
+          <Counter></Counter>
         </div>
       </div>
     </>
