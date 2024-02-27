@@ -1,0 +1,26 @@
+import { configureStore, createSlice } from "@reduxjs/toolkit";
+
+const cartSlice = createSlice({
+  name: "cart",
+  initialState: [],
+  reducers: {
+    addToCart(state, action) {
+      state.push(action.payload);
+    },
+  },
+});
+
+const store = configureStore({
+  reducer: {
+    cart: cartSlice.reducer,
+  },
+});
+
+console.log("on create store : ", store.getState());
+
+store.subscribe(() => {
+  console.log("STORE HAS CHANGE : ", store.getState());
+});
+
+store.dispatch(cartSlice.actions.addToCart({ id: 1, qty: 40 }));
+store.dispatch(cartSlice.actions.addToCart({ id: 2, qty: 32 }));
