@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import Button from "../Elements/Button";
+import { addToCart } from "../../redux/slices/cartSlice";
+import { useDispatch } from "react-redux";
 
 const CardProduct = ({ children }) => {
   return (
@@ -34,13 +36,17 @@ const Body = ({ children, name }) => {
   );
 };
 
-const Footer = ({ id, price, handleAddToCart }) => {
+const Footer = ({ id, price }) => {
+  const dispatch = useDispatch();
   return (
     <div className="flex items-center justify-between px-5 pb-5">
       <span className="text-1xl font-bold text-white">
         {price.toLocaleString("id-ID", { style: "currency", currency: "USD" })}
       </span>
-      <Button classname="bg-blue-600" onClick={() => handleAddToCart(id)}>
+      <Button
+        classname="bg-blue-600"
+        onClick={() => dispatch(addToCart({ id, qty: 1 }))}
+      >
         Add To Cart
       </Button>
     </div>
