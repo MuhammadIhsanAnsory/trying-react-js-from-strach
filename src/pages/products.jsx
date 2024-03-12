@@ -7,14 +7,13 @@ import { getProducts } from "../services/product.service";
 import { useLogin } from "../hooks/useLogin";
 import TableCart from "../components/Fragments/TableCart";
 import Navbar from "../components/Layouts/Navbar";
+import { useContext } from "react";
+import { DarkMode } from "../context/DarkMode";
 
 const ProductsPage = () => {
   const [products, setProducts] = useState([]);
   useLogin();
-
-  // useEffect(() => {
-  //   setCart(JSON.parse(localStorage.getItem("cart")) || []);
-  // }, []);
+  const { isDarkMode, setIsDarkMode } = useContext(DarkMode);
 
   useEffect(() => {
     getProducts((data) => {
@@ -25,7 +24,9 @@ const ProductsPage = () => {
   return (
     <>
       <Navbar />
-      <div className="flex justify-center py-5">
+      <div
+        className={`flex justify-center py-5 ${isDarkMode && "bg-slate-900"}`}
+      >
         <div className="w-2/3 flex-wrap">
           {products.length > 0 &&
             products.map((product) => (

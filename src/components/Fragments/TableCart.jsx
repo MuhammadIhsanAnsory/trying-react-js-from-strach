@@ -1,13 +1,21 @@
 import { useRef } from "react";
+import { useContext } from "react";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { DarkMode } from "../../context/DarkMode";
+import {
+  useTotalPrice,
+  useTotalPriceDispatch,
+} from "../../context/TotalPriceContext";
 
 const TableCart = (props) => {
   const { products } = props;
   const cart = useSelector((state) => {
     return state.cart.data;
   });
-  const [totalPrice, setTotalPrice] = useState(0);
+  const { isDarkMode } = useContext(DarkMode);
+  const dispatch = useTotalPriceDispatch();
+  const { total } = useTotalPrice();
 
   useEffect(() => {
     if (cart.length > 0 && products.length > 0) {
@@ -15,7 +23,12 @@ const TableCart = (props) => {
         const product = products.find((product) => product.id === item.id);
         return acc + product.price * item.qty;
       }, 0);
-      setTotalPrice(sum);
+      dispatch({
+        type: "UPDATE",
+        payload: {
+          total: sum,
+        },
+      });
       localStorage.setItem("cart", JSON.stringify(cart));
     }
   }, [cart, products]);
@@ -31,7 +44,11 @@ const TableCart = (props) => {
   // }, [cart]);
 
   return (
-    <table className="text-left table-auto border-separate border-spacing-x-4">
+    <table
+      className={`text-left table-auto border-separate border-spacing-x-4 ${
+        isDarkMode && "text-white"
+      }`}
+    >
       <thead>
         <tr>
           <th>Product</th>
@@ -67,7 +84,7 @@ const TableCart = (props) => {
           <td colSpan={3}>Total Price</td>
           <td>
             <b>
-              {totalPrice.toLocaleString("id-ID", {
+              {total.toLocaleString("id-ID", {
                 style: "currency",
                 currency: "USD",
               })}
